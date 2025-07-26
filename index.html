@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reacción Twitch</title>
+  <style>
+    body {
+      margin: 0;
+      background: black;
+      overflow: hidden;
+      font-family: sans-serif;
+      color: white;
+    }
+    #controls {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 10;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 10px;
+      border-radius: 8px;
+    }
+    iframe {
+      border: none;
+    }
+    #mainStream {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+    }
+    #reactionStream {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 320px;
+      height: 180px;
+      z-index: 5;
+      border: 2px solid white;
+    }
+  </style>
+</head>
+<body>
+  <div id="controls">
+    <label>
+      Canal principal:
+      <input type="text" id="mainChannel" placeholder="Canal principal" />
+    </label><br /><br />
+    <label>
+      Canal de reacción:
+      <input type="text" id="reactionChannel" placeholder="Canal reacción" />
+    </label><br /><br />
+    <button onclick="loadStreams()">Ver</button>
+  </div>
+
+  <iframe id="mainStream" allowfullscreen></iframe>
+  <iframe id="reactionStream" allowfullscreen></iframe>
+
+  <script>
+    function loadStreams() {
+      const main = document.getElementById("mainChannel").value.trim();
+      const reaction = document.getElementById("reactionChannel").value.trim();
+      if (main) {
+        document.getElementById("mainStream").src = `https://player.twitch.tv/?channel=${main}&parent=${location.hostname}&autoplay=true`;
+      }
+      if (reaction) {
+        document.getElementById("reactionStream").src = `https://player.twitch.tv/?channel=${reaction}&parent=${location.hostname}&autoplay=true`;
+      }
+    }
+  </script>
+</body>
+</html>
