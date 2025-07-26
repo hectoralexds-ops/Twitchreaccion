@@ -2,71 +2,78 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Reacción Twitch</title>
+  <title>MultiTwitch Personalizado</title>
   <style>
     body {
       margin: 0;
-      background: black;
+      background-color: black;
       overflow: hidden;
-      font-family: sans-serif;
-      color: white;
     }
-    #controls {
+    #inputContainer {
       position: absolute;
+      z-index: 999;
       top: 10px;
       left: 10px;
-      z-index: 10;
-      background: rgba(0, 0, 0, 0.7);
+      background-color: rgba(0, 0, 0, 0.8);
       padding: 10px;
       border-radius: 8px;
+      color: white;
+      font-family: Arial, sans-serif;
     }
-    iframe {
+    #main, #reaction {
+      position: absolute;
       border: none;
     }
-    #mainStream {
-      position: absolute;
+    #main {
       top: 0;
       left: 0;
       width: 100vw;
       height: 100vh;
+      z-index: 1;
     }
-    #reactionStream {
-      position: absolute;
+    #reaction {
+      width: 400px;
+      height: 225px;
       top: 10px;
       right: 10px;
-      width: 320px;
-      height: 180px;
-      z-index: 5;
-      border: 2px solid white;
+      z-index: 2;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+    }
+    input {
+      margin: 5px 0;
+      width: 100%;
+    }
+    button {
+      margin-top: 5px;
+      width: 100%;
+      padding: 5px;
+      font-weight: bold;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
-  <div id="controls">
-    <label>
-      Canal principal:
-      <input type="text" id="mainChannel" placeholder="Canal principal" />
-    </label><br /><br />
-    <label>
-      Canal de reacción:
-      <input type="text" id="reactionChannel" placeholder="Canal reacción" />
-    </label><br /><br />
-    <button onclick="loadStreams()">Ver</button>
+  <div id="inputContainer">
+    <label>Canal principal:</label><br />
+    <input type="text" id="mainChannel" placeholder="Ej: canalgrande" /><br />
+    <label>Canal de reacción:</label><br />
+    <input type="text" id="reactionChannel" placeholder="Ej: canalpeque" /><br />
+    <button onclick="loadStreams()">OK</button>
   </div>
 
-  <iframe id="mainStream" allowfullscreen></iframe>
-  <iframe id="reactionStream" allowfullscreen></iframe>
+  <iframe id="main" allowfullscreen></iframe>
+  <iframe id="reaction" allowfullscreen></iframe>
 
   <script>
     function loadStreams() {
-      const main = document.getElementById("mainChannel").value.trim();
-      const reaction = document.getElementById("reactionChannel").value.trim();
-      if (main) {
-        document.getElementById("mainStream").src = `https://player.twitch.tv/?channel=${main}&parent=${location.hostname}&autoplay=true`;
-      }
-      if (reaction) {
-        document.getElementById("reactionStream").src = `https://player.twitch.tv/?channel=${reaction}&parent=${location.hostname}&autoplay=true`;
+      const main = document.getElementById('mainChannel').value.trim();
+      const reaction = document.getElementById('reactionChannel').value.trim();
+      if (main && reaction) {
+        document.getElementById('main').src = `https://player.twitch.tv/?channel=${main}&parent=${location.hostname}`;
+        document.getElementById('reaction').src = `https://player.twitch.tv/?channel=${reaction}&parent=${location.hostname}`;
+        document.getElementById('inputContainer').style.display = 'none'; // Oculta el menú
+      } else {
+        alert('Por favor escribe ambos canales.');
       }
     }
   </script>
